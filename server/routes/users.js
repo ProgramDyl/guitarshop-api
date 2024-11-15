@@ -18,12 +18,12 @@ router.post('/signup', async (req, res) => {
     }
 
     //check for existing user
-    const existingUser = await prisma.customer.findUnique({
+    const existingCustomer = await prisma.customer.findUnique({
         where: {
             email: email,
         }
     });
-    if (existingUser) {
+    if (existingCustomer) {
         return res.status(400).send('User already exists');
     };
 
@@ -44,9 +44,40 @@ router.post('/signup', async (req, res) => {
     res.json({'customer' : email});
 });
 
-//login
-router.get('/login', (req, res) => {
-    res.send('Login');
+//log-in -- POST
+router.post('/login', async (req, res) => {
+
+    //get user inputs
+    const { email, password } = req.body;
+    //validate inputs
+    if (!email || !password) {
+        return res.status(400).send('Missing required fields.');
+    };
+    //find user in db
+    const existingCustomer = await prisma.customer.findUnique({
+        where: {
+            email: email,
+        }
+    });
+    if (!existingCustomer) {
+        return res.status(404).send('User not found');
+    }
+
+    //compare/verify password entered to stored pw
+    const passwordMatch = await comparePassword(password, existingCustomer.password);
+    if (!passwordMatch) {
+        return res.status(401).send('Invalid password');
+    }
+    
+    //setup user session data
+    req.session.email = existingCustomer.email;
+    req.session.customer_id = existingCustomer.customer_id;
+    req.session.first_name = existingCustomer.first_name;
+    req.session.last_name = existingCustomer.last_name;
+    console.log('logged in user: ', + req.session.email);
+
+    //send response
+    res.send('login successful');
 });
 
 //logout

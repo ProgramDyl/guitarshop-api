@@ -18,10 +18,18 @@ app.use(cors({
     credentials: true // allow cookies
   }));
 
-  //express-session middleware
-//   app.use(session({
-    
-//   }))
+// express-session middleware
+app.use(session({
+    secret: 'fkldjbnfdkFTFT5efd3$$sdg89F',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+      httpOnly: true,
+      secure: false,  // Set to `true` if using HTTPS in production
+      sameSite: 'lax',  // Consider 'none' if client and server are on different origins
+      maxAge: 3600000 // 1 hour in milliseconds
+    }
+  }));
 
 
 //routes

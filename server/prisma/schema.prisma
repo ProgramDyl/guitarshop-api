@@ -11,13 +11,16 @@ datasource db {
 }
 
 
-model Skateboard {
+model guitars {
   product_id      Int      @id      
-  name            String   @unique
+  brand           String   @unique
+  model           String
+  year            Int
   description     String   
-  style           String
-  size            Int
-  wheelbase       Decimal  @default(0.00)
+  body            String
+  color           String
+  is_electric     Boolean  @default(true) 
+  scale           Decimal  @default(0.00)
   cost            Decimal  @default(0.00)
   image_filename  String
   createdAt       DateTime @default(now())  
