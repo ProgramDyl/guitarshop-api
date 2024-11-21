@@ -2,7 +2,12 @@ import express from 'express';
 import cors from 'cors'; //allow client app to connect to server app 
 import usersRouter from './routes/users.js';
 import homeRouter from './routes/home.js';
+import guitarsRouter from './routes/guitars.js';
 import session from 'express-session';
+
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -35,6 +40,7 @@ app.use(session({
 //routes
 app.use('/api/', homeRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/guitars', guitarsRouter);
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

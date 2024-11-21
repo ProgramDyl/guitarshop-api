@@ -1,13 +1,14 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { hashPassword, comparePassword } from '../lib/utility.js';
+import session from 'express-session';
 
-const router = express.Router();
+const usersRouter = express.Router();
 
 const prisma = new PrismaClient();
 
 //sign up -- POST
-router.post('/signup', async (req, res) => {
+usersRouter.post('/signup', async (req, res) => {
     
     //get user inputs
     const { email, password, first_name, last_name } = req.body;
@@ -33,6 +34,7 @@ router.post('/signup', async (req, res) => {
     //add user to db
     const customer = await prisma.customer.create({
         data: {
+            customer_id: customer_id,
             first_name: first_name,
             last_name: last_name,
             email: email,
@@ -45,7 +47,7 @@ router.post('/signup', async (req, res) => {
 });
 
 //log-in -- POST
-router.post('/login', async (req, res) => {
+usersRouter.post('/login', async (req, res) => {
 
     //get user inputs
     const { email, password } = req.body;
@@ -74,24 +76,28 @@ router.post('/login', async (req, res) => {
     req.session.customer_id = existingCustomer.customer_id;
     req.session.first_name = existingCustomer.first_name;
     req.session.last_name = existingCustomer.last_name;
-    console.log('logged in user: ', + req.session.email);
+    console.log('logged in customer: ', + req.session.customer_id + '\n' + req.session.email);
 
     //send response
     res.send('login successful');
 });
 
 //logout
-router.get('/logout', (req, res) => {
+usersRouter.get('/logout', (req, res) => {
     req.session.destroy();
     res.send('Logout successful.');
 });
 
 //get user session
-router.get('/getSession', (req, res) => {
-    res.send('session');
+usersRouter.get('/session', (req, res) => {
+
+    try{
+    res.json({ 'id: ' : req.session.customer_id , 'email: ' : req.session.email , 'Name ' : req.session.first_name + ' ' + req.session.last_name });
+    } catch {
+        return res.status(401).send('User not logged in.');
+    }
+
 });
 
-
-
-export default router;
+export default usersRouter;
 
