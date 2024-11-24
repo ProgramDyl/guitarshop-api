@@ -1,3 +1,8 @@
+//INET2656 - Web Application Programming
+// written by: Dylan Cunningham 
+//             W0443022
+
+
 import express from 'express';
 import cors from 'cors'; //allow client app to connect to server app 
 import usersRouter from './routes/users.js';
