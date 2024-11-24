@@ -5,13 +5,14 @@ import homeRouter from './routes/home.js';
 import guitarsRouter from './routes/guitars.js';
 import purchaseRouter from './routes/purchase.js';
 import session from 'express-session';
-
 import dotenv from 'dotenv';
+import PasswordValidator from 'password-validator';
 
 dotenv.config();
-
 const port = process.env.PORT || 3000;
 const app = express();
+
+
 
 //middleware
 app.use(express.json());

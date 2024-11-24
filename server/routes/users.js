@@ -2,23 +2,43 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { hashPassword, comparePassword } from '../lib/utility.js';
 import session from 'express-session';
+import PasswordValidator from 'password-validator';
 
 const usersRouter = express.Router();
-
 const prisma = new PrismaClient();
 
-//sign up -- POST
+// Create a schema
+const schema = new PasswordValidator();
+
+// Add properties to it
+schema
+  .is().min(8)                                    // Minimum length 8
+  .has().uppercase()                              // Must have uppercase letters
+  .has().lowercase()                              // Must have lowercase letters
+  .has().digits()                                 // Must have digits
+  .has().not().spaces();                          // Should not have spaces
+
+// Sign up -- POST
 usersRouter.post('/signup', async (req, res) => {
     
-    //get user inputs
+    // Get user inputs
     const { email, password, first_name, last_name } = req.body;
 
-    //validate inputs
+    // Validate inputs
     if (!email || !password || !first_name || !last_name) {
         return res.status(400).send('Missing: Required Field(s).');
     }
 
-    //check for existing user
+    // Validate password
+    const passwordValidationErrors = schema.validate(password, { details: true });
+    if (passwordValidationErrors.length > 0) {
+        return res.status(400).json({
+            message: 'Password does not meet the policy requirements',
+            errors: passwordValidationErrors
+        });
+    }
+
+    // Check for existing user
     const existingCustomer = await prisma.customer.findUnique({
         where: {
             email: email,
@@ -28,10 +48,10 @@ usersRouter.post('/signup', async (req, res) => {
         return res.status(400).send('User already exists');
     };
 
-    //hash pw
+    // Hash password
     const hashedPassword = await hashPassword(password);
 
-    //add user to db
+    // Add user to database
     const customer = await prisma.customer.create({
         data: {
             first_name: first_name,
@@ -41,20 +61,22 @@ usersRouter.post('/signup', async (req, res) => {
         }
     });
 
-    //send response
+    // Send response
     res.json({'customer' : email});
 });
 
-//log-in -- POST
+// Log-in -- POST
 usersRouter.post('/login', async (req, res) => {
 
-    //get user inputs
+    // Get user inputs
     const { email, password } = req.body;
-    //validate inputs
+
+    // Validate inputs
     if (!email || !password) {
         return res.status(400).send('Missing required fields.');
     };
-    //find user in db
+
+    // Find user in database
     const existingCustomer = await prisma.customer.findUnique({
         where: {
             email: email,
@@ -64,39 +86,37 @@ usersRouter.post('/login', async (req, res) => {
         return res.status(404).send('User not found');
     }
 
-    //compare/verify password entered to stored pw
+    // Compare/verify password entered to stored password
     const passwordMatch = await comparePassword(password, existingCustomer.password);
     if (!passwordMatch) {
         return res.status(401).send('Invalid password');
     }
     
-    //setup user session data
+    // Setup user session data
     req.session.email = existingCustomer.email;
     req.session.customer_id = existingCustomer.customer_id;
     req.session.first_name = existingCustomer.first_name;
     req.session.last_name = existingCustomer.last_name;
     console.log('logged in customer: ', + req.session.customer_id + '\n' + req.session.email);
 
-    //send response
+    // Send response
     res.send('login successful');
 });
 
-//logout
+// Logout
 usersRouter.get('/logout', (req, res) => {
     req.session.destroy();
     res.send('Logout successful.');
 });
 
-//get user session
+// Get user session
 usersRouter.get('/session', (req, res) => {
 
-    try{
-    res.json({ 'id: ' : req.session.customer_id , 'email: ' : req.session.email , 'Name ' : req.session.first_name + ' ' + req.session.last_name });
+    try {
+        res.json({ 'id: ': req.session.customer_id, 'email: ': req.session.email, 'Name ': req.session.first_name + ' ' + req.session.last_name });
     } catch {
         return res.status(401).send('User not logged in.');
     }
-
 });
 
 export default usersRouter;
-
