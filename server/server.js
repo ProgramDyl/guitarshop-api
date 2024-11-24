@@ -3,6 +3,7 @@ import cors from 'cors'; //allow client app to connect to server app
 import usersRouter from './routes/users.js';
 import homeRouter from './routes/home.js';
 import guitarsRouter from './routes/guitars.js';
+import purchaseRouter from './routes/purchase.js';
 import session from 'express-session';
 
 import dotenv from 'dotenv';
@@ -41,6 +42,14 @@ app.use(session({
 app.use('/api/', homeRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/guitars', guitarsRouter);
+app.use('/api/purchase', purchaseRouter);
+
+
+//error handling
+app.use((err, req, res, next) => {
+  console.error('Unhandled error: ', err);
+  res.status(500).send('Internal server error');
+});
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

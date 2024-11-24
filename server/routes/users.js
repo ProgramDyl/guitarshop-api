@@ -34,7 +34,6 @@ usersRouter.post('/signup', async (req, res) => {
     //add user to db
     const customer = await prisma.customer.create({
         data: {
-            customer_id: customer_id,
             first_name: first_name,
             last_name: last_name,
             email: email,

@@ -41,7 +41,7 @@ model Purchase {
   province        String
   country         String    
   postal_code     String
-  credit_card     Int
+  credit_card     BigInt
   credit_expire   DateTime    
   credit_cvv      Int
   invoice_amt     Decimal
