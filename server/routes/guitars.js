@@ -27,6 +27,7 @@ guitarsRouter.get('/:id', async (req, res) => {
 
     const id = req.params.id;
     console.log(id);
+    
     if (isNaN(id)) {
         res.status(400).json({ message: 'Invalid number.'});
         return;

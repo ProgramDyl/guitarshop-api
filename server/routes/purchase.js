@@ -66,6 +66,7 @@ purchaseRouter.post('/', async (req, res) => {
     const productIds = cart.split(',').map(id => parseInt(id));
     const productQuantity = {};
 
+    
     for (const id of productIds) {
         if (productQuantity[id]) {
             productQuantity[id]++;
