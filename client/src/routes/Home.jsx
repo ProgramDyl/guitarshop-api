@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Card from '../ui/Card';
 
 export default function Home() {
 
@@ -38,6 +39,7 @@ export default function Home() {
         <div>
             <h1>Home</h1>
             <p>This is the home page</p>
+    
         </div>
     );
 }
