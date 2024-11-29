@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Card from '../ui/Card';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
 
@@ -36,10 +37,21 @@ export default function Home() {
     }
 
     return (
-        <div>
-            <h1>Home</h1>
-            <p>This is the home page</p>
-    
-        </div>
+        <>
+            <div>
+                <h1>Our Inventory</h1>
+                <div className="card-row">
+                {
+                    guitars.length > 0 ?
+                    guitars.map(guitars => (
+                        <Card guitars={guitars} apiHost={apiHost} showLinks={true} />
+                    )) :
+                    <p>No guitars... </p>
+                }
+                </div>
+        
+            </div>
+         </>
     );
 }
+

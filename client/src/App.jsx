@@ -14,7 +14,8 @@ function App() {
       
       <hr />
       <div>
-        <p>This is the child page:</p>
+        <p>Guitars</p>
+        <hr></hr>
         <Outlet />
       </div>
     </>
