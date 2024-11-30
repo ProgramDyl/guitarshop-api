@@ -5,35 +5,36 @@ import Card from '../ui/Card';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
+    // initialize state for guitars
+    const [guitars, setGuitars] = useState([]);
 
-    const [guitars, setGuitars] = useState([]); //init as empty array
-
+    // set api host and url for fetching data
     const apiHost = import.meta.env.VITE_API_HOST;
     const apiUrl = apiHost + '/api/guitars/all';
 
-    //get guitars from API
+    // fetch guitars when component mounts or apiUrl changes
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('http://localhost:3000/api/guitars/all');
+                const response = await fetch(apiUrl);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Guitar fetched: ", data);
+                    console.log("Guitars fetched: ", data);
                     setGuitars(data);
                 } else {
                     console.error("Failed to fetch: ", response.status);
-                    console.log("Response body: ", await response.text());
                     setGuitars(null);
                 }
             } catch (error) {
-                console.error('Error fetching skateboards: ', error);
+                console.error('Error fetching guitars: ', error);
             }
         }
         fetchData();
-    }, []);
+    }, [apiUrl]);
 
+    // display loading message if guitars are null
     if (guitars === null) {
-        return <p>Loading... </p>; //loading state
+        return <p>Loading... </p>;
     }
 
     return (
@@ -41,17 +42,16 @@ export default function Home() {
             <div>
                 <h1>Our Inventory</h1>
                 <div className="card-row">
-                {
-                    guitars.length > 0 ?
-                    guitars.map(guitars => (
-                        <Card guitars={guitars} apiHost={apiHost} showLinks={true} />
-                    )) :
-                    <p>No guitars... </p>
-                }
+                    {guitars.length > 0 ? 
+                        // render cards for each guitar
+                        guitars.map(guitar => (
+                            <Card key={guitar.id} guitars={guitar} apiHost={apiHost} showLinks={true} />
+                        )) : 
+                        // display message if no guitars
+                        <p>No guitars... </p>
+                    }
                 </div>
-        
             </div>
-         </>
+        </>
     );
 }
-
