@@ -48,10 +48,6 @@ export default function Cart() {
     return <p>Loading...</p>;
   }
 
-  // calculate subtotal cost
-  const calculateSubtotal = () => {
-    return products.reduce((total, product) => total + (product.cost * product.quantity), 0);
-  };
 
   return (
     <div className="cart-container text-center">

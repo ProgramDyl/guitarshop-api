@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useCookies } from 'react-cookie';
+import './Details.css';
 
 export default function Details() {
   // get product id from params and set up navigation
@@ -91,6 +92,8 @@ export default function Details() {
       </div>
       <button onClick={() => navigate(-1)} className="btn btn-secondary mt-3">Go Back</button>
       <button onClick={addToCart} className="btn btn-primary mt-3 ml-2">Add to Cart</button>
+      <button onClick={() => navigate('/')} className="btn btn-primary mt-3 ml-2">Continue Shopping</button>
+      <button onClick={() => navigate('/checkout')} className="btn btn-secondary mt-3">Complete Purchase</button>
     </div>
   );
 }

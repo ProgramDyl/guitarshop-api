@@ -38,20 +38,16 @@ export default function Home() {
     }
 
     return (
-        <>
-            <div>
-                <h1>Our Inventory</h1>
-                <div className="card-row">
-                    {guitars.length > 0 ? 
-                        // render cards for each guitar
-                        guitars.map(guitar => (
-                            <Card key={guitar.id} guitars={guitar} apiHost={apiHost} showLinks={true} />
-                        )) : 
-                        // display message if no guitars
-                        <p>No guitars... </p>
-                    }
-                </div>
+        <div style={{ padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '10px', textAlign: 'center' }}>
+            <h1 style={{ color: '#6200ea', marginBottom: '20px', textAlign: 'center' }}>Our Inventory</h1>
+            <div className="card-row" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
+                {guitars.length > 0 ? 
+                    guitars.map(guitar => (
+                        <Card key={guitar.id} guitars={guitar} apiHost={apiHost} showLinks={true} />
+                    )) : 
+                    <p>No guitars available...</p>
+                }
             </div>
-        </>
+        </div>
     );
 }

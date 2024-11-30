@@ -5,9 +5,9 @@ function App() {
 
   return (
     <>
-      <h1>Dylan's Guitar Shop</h1>
+      <h1 style={{ textAlign: 'center' }}>Dylan's Guitar Shop</h1>
       
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Nav />
       </div>
       
