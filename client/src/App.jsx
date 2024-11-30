@@ -14,7 +14,7 @@ function App() {
       
       <hr />
       <div>
-        <p>Guitars</p>
+        
         <hr></hr>
         <Outlet />
       </div>

@@ -16,8 +16,8 @@ model guitars {
   body            String
   color           String
   is_electric     Boolean  @default(true) 
-  scale           Decimal  @default(0.00)
-  cost            Decimal  @default(0.00)
+  scale           Float  @default(0.00) 
+  cost            Float  @default(0.00) 
   image_filename  String
   createdAt       DateTime @default(now())  
   updatedAt       DateTime @updatedAt
