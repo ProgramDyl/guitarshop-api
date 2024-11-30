@@ -6,21 +6,12 @@ const apiHost = import.meta.env.VITE_API_HOST;
 
 // display individual cart items
 const CartItem = ({ product }) => {
-  
-  //*  
-  //*NOTE: 
-  //* toFixed() was provided by asking CoPilot, I was having  
-  //* crashes before I asked it what to do. Specifically,
-  //* my cost was displaying with 12 decimal places. So when 
-  //* I changed the datatype to float, it would throw an error. 
-  //* I asked co-pilot if there was a quick way to fix this. 
-  
-  const total = (product.cost * product.quantity).toFixed(2); 
+  const total = (product.cost * product.quantity).toFixed(2); // round total to 2 decimal places
   return (
     <div className="cart-item">
       <img src={`${apiHost}/${product.image_filename}`} alt={product.name} className="img-thumbnail" />
       <h4>{product.brand} {product.model}</h4>
-      <p>price: ${product.cost.toFixed(2)}</p>
+      <p>price: ${product.cost.toFixed(2)}</p> {/* round price to 2 decimal places */}
       <p>quantity: {product.quantity}</p>
       <p>total: ${total}</p>
     </div>
@@ -28,9 +19,6 @@ const CartItem = ({ product }) => {
 };
 
 export default function Cart() {
-  
-  //init products (setter) 
-  //cookies init!!
   const [cookies] = useCookies(['cart']);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -38,14 +26,16 @@ export default function Cart() {
 
   // parse cart cookie to get product ids and quantities
   const parseCartCookie = () => {
-
     const cartCookie = cookies.cart || '';
-    //split what's in the list by the comma 
+    console.log('Cart Cookie:', cartCookie); // Log the cart cookie
+    if (typeof cartCookie !== 'string') {
+      console.error('Cart cookie is not a string:', cartCookie);
+      return {};
+    }
     const productIds = cartCookie.split(',');
-    const quantities = {}; //init empty obj
-    
-    productIds.forEach(id => { 
-      quantities[id] = (quantities[id] || 0) + 1; //checks if id matches current. if it does, add 1 to the product total.  
+    const quantities = {}; // init empty obj
+    productIds.forEach(id => {
+      quantities[id] = (quantities[id] || 0) + 1; // checks if id matches current. if it does, add 1 to the product total.
     });
     return quantities;
   };
@@ -59,11 +49,11 @@ export default function Cart() {
         const data = await response.json();
         return data;
       } else {
-        console.error('failed to fetch data');
+        console.error('Failed to fetch data');
         return [];
       }
     } catch (error) {
-      console.error('error fetching data:', error);
+      console.error('Error fetching data:', error);
       return [];
     }
   };
@@ -72,17 +62,13 @@ export default function Cart() {
     const quantities = parseCartCookie();
     const uniqueProductIds = Object.keys(quantities);
 
-    //grab guitars, convert to data (see mike's demo)
     fetchAllGuitars().then(data => {
-
-      // filter the fetched guitars to include only those in the cart
       const filteredProducts = data.filter(product => uniqueProductIds.includes(product.product_id.toString()))
-        // add quantity to each product
-        .map(product => ({ ...product, quantity: quantities[product.product_id] })); 
+        .map(product => ({ ...product, quantity: quantities[product.product_id] })); // add quantity to each product
       setProducts(filteredProducts);
       setLoading(false);
     }).catch(error => {
-      console.error('error fetching data:', error);
+      console.error('Error fetching data:', error);
       setLoading(false);
     });
   }, [cookies.cart]);
@@ -91,22 +77,22 @@ export default function Cart() {
     return <p>Loading...</p>;
   }
 
-  // calculate subtotal cost source: co-pilot
+  // calculate subtotal cost
   const calculateSubtotal = () => {
     const subtotal = products.reduce((total, product) => total + (product.cost * product.quantity), 0);
-    return subtotal.toFixed(2); ///toFixed source: CoPilot 
+    return subtotal.toFixed(2); // round subtotal to 2 decimal places
   };
 
   return (
     <div className="cart-container text-center">
-      <h1>your shopping cart</h1>
+      <h1>Your Shopping Cart</h1>
       {products.map(product => (
         <CartItem key={product.product_id} product={product} />
       ))}
-      <h3>subtotal: ${calculateSubtotal()}</h3>
+      <h3>Subtotal: ${calculateSubtotal()}</h3>
       <div>
-        <button onClick={() => navigate('/')} className="btn btn-secondary mt-3">continue shopping</button>
-        <button onClick={() => navigate('/checkout')} className="btn btn-primary mt-3 ml-2">complete purchase</button>
+        <button onClick={() => navigate('/')} className="btn btn-secondary mt-3">Continue Shopping</button>
+        <button onClick={() => navigate('/checkout')} className="btn btn-primary mt-3 ml-2">Complete Purchase</button>
       </div>
     </div>
   );
