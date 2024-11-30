@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useCookies } from 'react-cookie';
-import './Details.css';
+import '../ui/Details.css';
 
 export default function Details() {
   // get product id from params and set up navigation

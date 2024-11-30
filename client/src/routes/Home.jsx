@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Card from '../ui/Card';
 import { Link } from 'react-router-dom';
+import '../ui/Home.css';
 
 export default function Home() {
     // initialize state for guitars
@@ -38,9 +39,9 @@ export default function Home() {
     }
 
     return (
-        <div style={{ padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '10px', textAlign: 'center' }}>
-            <h1 style={{ color: '#6200ea', marginBottom: '20px', textAlign: 'center' }}>Our Inventory</h1>
-            <div className="card-row" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
+        <div className="home-container">
+            <h1 className="inventory-title">Our Inventory</h1>
+            <div className="card-row">
                 {guitars.length > 0 ? 
                     guitars.map(guitar => (
                         <Card key={guitar.id} guitars={guitar} apiHost={apiHost} showLinks={true} />

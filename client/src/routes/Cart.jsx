@@ -6,8 +6,14 @@ const apiHost = import.meta.env.VITE_API_HOST;
 
 // display individual cart items
 const CartItem = ({ product }) => {
-  //citation: toFixed provided by CoPilot, 
-  //I was having crashes before I asked it what to do. 
+  
+  //*  
+  //*NOTE: 
+  //* toFixed() was provided by asking CoPilot, I was having  
+  //* crashes before I asked it what to do. Specifically,
+  //* my cost was displaying with 12 decimal places. So when 
+  //* I changed the datatype to float, it would throw an error. 
+  //* I asked co-pilot if there was a quick way to fix this. 
   
   const total = (product.cost * product.quantity).toFixed(2); 
   return (
@@ -23,7 +29,8 @@ const CartItem = ({ product }) => {
 
 export default function Cart() {
   
-  //states, navigates, and cart cookies
+  //init products (setter) 
+  //cookies init!!
   const [cookies] = useCookies(['cart']);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -36,8 +43,9 @@ export default function Cart() {
     //split what's in the list by the comma 
     const productIds = cartCookie.split(',');
     const quantities = {}; //init empty obj
+    
     productIds.forEach(id => { 
-      quantities[id] = (quantities[id] || 0) + 1;
+      quantities[id] = (quantities[id] || 0) + 1; //checks if id matches current. if it does, add 1 to the product total.  
     });
     return quantities;
   };
@@ -64,10 +72,13 @@ export default function Cart() {
     const quantities = parseCartCookie();
     const uniqueProductIds = Object.keys(quantities);
 
+    //grab guitars, convert to data (see mike's demo)
     fetchAllGuitars().then(data => {
+
       // filter the fetched guitars to include only those in the cart
       const filteredProducts = data.filter(product => uniqueProductIds.includes(product.product_id.toString()))
-        .map(product => ({ ...product, quantity: quantities[product.product_id] })); // add quantity to each product
+        // add quantity to each product
+        .map(product => ({ ...product, quantity: quantities[product.product_id] })); 
       setProducts(filteredProducts);
       setLoading(false);
     }).catch(error => {
@@ -77,7 +88,7 @@ export default function Cart() {
   }, [cookies.cart]);
 
   if (loading) {
-    return <p>loading...</p>;
+    return <p>Loading...</p>;
   }
 
   // calculate subtotal cost source: co-pilot

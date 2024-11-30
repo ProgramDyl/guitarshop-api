@@ -6,16 +6,16 @@ function App() {
   return (
     <>
       <h1 style={{ textAlign: 'center' }}>Dylan's Guitar Shop</h1>
-      
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+      <div style={{ display: 'flex', padding: '0px', justifyContent: 'center', alignItems: 'center' }}>
         <Nav />
       </div>
       
       
-      <hr />
-      <div>
+      
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         
-        <hr></hr>
+        
         <Outlet />
       </div>
     </>
