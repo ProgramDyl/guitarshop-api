@@ -2,6 +2,8 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
+import '../ui/Cart.css'
+
 const apiHost = import.meta.env.VITE_API_HOST;
 
 //TODO: 

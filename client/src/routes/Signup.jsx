@@ -53,25 +53,25 @@ export default function Signup() {
     return (
         <div className="main-content">
             <div className="signup-container">
-                <h2 className="signup-title">sign up</h2>
+                <h2 className="signup-title">Sign up</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group">
-                        <label>first name</label>
+                        <label>First Name</label>
                         <input type="text" {...register('firstName', { required: true })} placeholder="Enter your first name" />
                         {errors.firstName && <span className="error-message">first name is required</span>}
                     </div>
                     <div className="form-group">
-                        <label>last name</label>
+                        <label>Last Name</label>
                         <input type="text" {...register('lastName', { required: true })} placeholder="Enter your last name" />
                         {errors.lastName && <span className="error-message">last name is required</span>}
                     </div>
                     <div className="form-group">
-                        <label>email</label>
+                        <label>Email</label>
                         <input type="email" {...register('email', { required: true })} placeholder="Enter your email" />
                         {errors.email && <span className="error-message">email is required</span>}
                     </div>
                     <div className="form-group">
-                        <label>password</label>
+                        <label>Password</label>
                         <input type="password" {...register('password', { required: true })} placeholder="Enter your password" />
                         {errors.password && <span className="error-message">password is required</span>}
                     </div>
