@@ -17,18 +17,17 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-
+// cors middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // react client
+  methods: ['GET', 'POST', 'DELETE'], //allows specific methods
+  credentials: true // allow cookies
+}));
 
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
-// cors middleware
-app.use(cors({
-    origin: 'http://localhost:5173', // react client
-    credentials: true // allow cookies
-  }));
 
 // express-session middleware
 app.use(session({
@@ -49,6 +48,19 @@ app.use('/api/', homeRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/guitars', guitarsRouter);
 app.use('/api/purchase', purchaseRouter);
+
+
+//CORS debug middleware 
+// CITATION: https://blog.pixelfreestudio.com/cors-errors-demystified-how-to-fix-cross-origin-issues-2/?form=MG0AV3
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Headers', 'GET, POST, PUT,');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 
 //error handling

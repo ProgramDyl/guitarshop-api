@@ -1,20 +1,18 @@
 import { Link } from 'react-router-dom';
-import Home from '../routes/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function Nav() {
     return (
-        <>
-
-            <Link to="/" className="btn btn-outline-secondary">Home </Link>
+        <nav style={{ display: 'flex', justifyContent: 'space-around', padding: '10px', backgroundColor: '#f8f9fa', borderBottom: '2px solid #e94560' }}>
             
-            <Link to="/login" className="btn btn-outline-secondary">Login </Link>
+            <Link to="/" className="btn btn-outline-secondary" style={{ margin: '0 10px' }}>Home</Link>
             
-            <Link to="/cart" className="btn btn-outline-secondary">Cart </Link>
+            <Link to="/login" className="btn btn-outline-secondary" style={{ margin: '0 10px' }}>Login</Link>
             
-            <Link to="/logout" className="btn btn-outline-secondary">Logout </Link>
-           
-        </>
+            <Link to="/cart" className="btn btn-outline-secondary bi bi-cart" style={{ margin: '0 10px' }}></Link>
+            
+            <Link to="/logout" className="btn btn-outline-secondary" style={{ margin: '0 10px' }}>Logout</Link>
+        </nav>
     );
 }

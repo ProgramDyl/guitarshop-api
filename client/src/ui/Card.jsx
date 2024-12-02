@@ -15,9 +15,9 @@ export default function Card(props) {
             </div>
             <div className="guitar-info mt-3">
                 <h4 className="card-title font-weight-bold">{`${props.guitars.brand} ${props.guitars.model}`}</h4>
-                <h3 className="card-cost text-success">{`$${props.guitars.cost}`}</h3>
+                <h3 className="card-cost">{`$${props.guitars.cost}`}</h3>
                 <div className="card-description">
-                    <p className="description text-muted">{`${props.guitars.description}`}</p>
+                    <p className="description">{`${props.guitars.description}`}</p>
                 </div>
             </div>
             {props.showLinks && (

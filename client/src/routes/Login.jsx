@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+
 export default function Login() {
-    return (
-        <div>
-            <h1>login</h1>
-            <p>This is the login page</p>
-        </div>
-    );
+    const [successMessage, setSuccessMessage] = useState(null);
+    const apiHost = import.meta.env.VITE_API_HOST;
+    const apiUrl = `${apiHost}/api/users/login`; 
 }

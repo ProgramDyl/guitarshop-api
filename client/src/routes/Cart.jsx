@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react';
 
 const apiHost = import.meta.env.VITE_API_HOST;
 
+//TODO: 
+  // - user can remove product from cart 
+  // - should remove product from cookie 
+  // - display subtotal, tax, and grand-total
+
+
 // display individual cart items
 const CartItem = ({ product }) => {
   const total = (product.cost * product.quantity).toFixed(2); // round total to 2 decimal places

@@ -18,18 +18,16 @@ schema
   .has().digits()                                 // Must have digits
   .has().not().spaces();                          // Should not have spaces
 
+
+
 // Sign up -- POST
 usersRouter.post('/signup', async (req, res) => {
-    
-    // Get user inputs
     const { email, password, first_name, last_name } = req.body;
 
-    // Validate inputs
     if (!email || !password || !first_name || !last_name) {
-        return res.status(400).send('Missing: Required Field(s).');
+        return res.status(400).json({ message: 'Missing: Required Field(s).' });
     }
 
-    // Validate password
     const passwordValidationErrors = schema.validate(password, { details: true });
     if (passwordValidationErrors.length > 0) {
         return res.status(400).json({
@@ -38,20 +36,17 @@ usersRouter.post('/signup', async (req, res) => {
         });
     }
 
-    // Check for existing user
     const existingCustomer = await prisma.customer.findUnique({
         where: {
             email: email,
         }
     });
     if (existingCustomer) {
-        return res.status(400).send('User already exists');
-    };
+        return res.status(400).json({ message: 'User already exists\n' });
+    }
 
-    // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Add user to database
     const customer = await prisma.customer.create({
         data: {
             first_name: first_name,
@@ -61,9 +56,9 @@ usersRouter.post('/signup', async (req, res) => {
         }
     });
 
-    // Send response
-    res.json({'customer' : email});
+    res.json({ 'customer': email });
 });
+
 
 // Log-in -- POST
 usersRouter.post('/login', async (req, res) => {
