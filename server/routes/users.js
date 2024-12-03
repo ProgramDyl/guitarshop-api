@@ -68,7 +68,7 @@ usersRouter.post('/login', async (req, res) => {
 
     // Validate inputs
     if (!email || !password) {
-        return res.status(400).send('Missing required fields.');
+        return res.status(400).json({ message: 'Missing required fields.' });
     };
 
     // Find user in database
@@ -78,13 +78,13 @@ usersRouter.post('/login', async (req, res) => {
         }
     });
     if (!existingCustomer) {
-        return res.status(404).send('User not found');
+        return res.status(404).json({ message: 'User not found' });
     }
 
     // Compare/verify password entered to stored password
     const passwordMatch = await comparePassword(password, existingCustomer.password);
     if (!passwordMatch) {
-        return res.status(401).send('Invalid password');
+        return res.status(401).json({ message: 'Invalid password' });
     }
     
     // Setup user session data
@@ -95,7 +95,7 @@ usersRouter.post('/login', async (req, res) => {
     console.log('logged in customer: ', + req.session.customer_id + '\n' + req.session.email);
 
     // Send response
-    res.send('login successful');
+    res.json({ message: 'Login successfull' });
 });
 
 // Logout

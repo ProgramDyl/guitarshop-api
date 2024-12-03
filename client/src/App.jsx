@@ -1,35 +1,23 @@
 import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
 import Nav from './ui/Nav';
 
-
-
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
-//  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
- //get state variable
- //pass into nav as prop
- //play around with changing it
- //then use `useOutletContext` to path method into login and logout pages 
-// after successful login, set true
-//after logout, set false
+  const contextValue = { isLoggedIn, setIsLoggedIn }; 
 
   return (
     <>
       <h1 style={{ textAlign: 'center', backgroundColor: 'darkgrey' }}>Dylan's Guitar Shop</h1>
-
       <div style={{ display: 'flex', padding: '0px', justifyContent: 'center', alignItems: 'center' }}>
-        <Nav />
+        <Nav isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       </div>
-      
-      
-      
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        
-        
-        <Outlet />
+        <Outlet context={contextValue} />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

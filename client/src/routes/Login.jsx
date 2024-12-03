@@ -1,25 +1,24 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import Home from '../routes/Home';
 
 export default function Login() {
-
+    const { setIsLoggedIn } = useOutletContext(); // get the setIsLoggedIn function from context
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [serverError, setServerError] = useState();
-    const [successMessage, setSuccessMessage] = useState(null);
-    const apiHost = import.meta.env.VITE_API_HOST;
+    const [serverError, setServerError] = useState(); 
+    const [successMessage, setSuccessMessage] = useState(null); 
+    const apiHost = import.meta.env.VITE_API_HOST; 
     const apiUrl = `${apiHost}/api/users/login`; 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     // handle form submission 
     const onSubmit = async (data) => {
-        //map the form data
+        // map the form data to match the server's expected field names
         const formattedData = {
             email: data.email,
             password: data.password
         };
-        console.log('Submitting data: ', formattedData);
+        console.log('Submitting data: ', formattedData); // log the submitted data
 
         try {
             const response = await fetch(apiUrl, {
@@ -27,22 +26,25 @@ export default function Login() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include',
-                //send data
+                credentials: 'include', // include credentials with the request
+                // send the formatted data
                 body: JSON.stringify(formattedData),
             });
 
-            if(!response.ok) {
+            if (!response.ok) {
+                // capture and throw error message from the server
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to log in.');
             }
 
-            setSuccessMessage('Log-in Successful!');
-            setServerError(null);
+            setSuccessMessage('Log-in Successful!'); // set success message
+            setServerError(null); // clear any server errors
+            setIsLoggedIn(true); // update login state to true
+            setTimeout(() => navigate('/'), 2000); // redirect to the home page after 2 seconds
         } catch (error) {
-            console.error('Login error occurred: ', error);
-            setServerError(error.message);
-            setSuccessMessage(null);
+            console.error('Login error occurred: ', error); // log the error
+            setServerError(error.message); // set server error message
+            setSuccessMessage(null); // clear success message
         }
     };
 
@@ -58,16 +60,13 @@ export default function Login() {
                     </div>
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" name="password" {...register('password', {required: true })} placeholder="Enter password" />
-                        {errors.password && <span className="error-message">Password is required</span>}                        
+                        <input type="password" name="password" {...register('password', { required: true })} placeholder="Enter password" />
+                        {errors.password && <span className="error-message">Password is required</span>}
                     </div>
                     {serverError && <span className="error-message">{serverError}</span>}
                     {successMessage && <span className="success-message">{successMessage}</span>}
-                    &nbsp;
-                    <br></br>
-                    <br></br>
                     <div>
-                        <button onClick={() => navigate('/')} type="submit" className="btn-submit">Log In</button>
+                        <button type="submit" className="btn-submit">Log In</button>
                     </div>
                 </form>
                 <Link to="/signup">Don't have an account? Signup here</Link>

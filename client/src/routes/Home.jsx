@@ -44,7 +44,7 @@ export default function Home() {
             <div className="card-row">
                 {guitars.length > 0 ? 
                     guitars.map(guitar => (
-                        <Card key={guitar.id} guitars={guitar} apiHost={apiHost} showLinks={true} />
+                        <Card key={guitar.product_id} guitars={guitar} apiHost={apiHost} showLinks={true} />
                     )) : 
                     <p>No guitars available...</p>
                 }
