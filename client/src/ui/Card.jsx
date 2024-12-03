@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../ui/Card.css'
+import { formatNumber } from '../lib/utils.js';
 
 export default function Card(props) {
     return (
@@ -15,7 +16,7 @@ export default function Card(props) {
             </div>
             <div className="guitar-info mt-3">
                 <h4 className="card-title font-weight-bold">{`${props.guitars.brand} ${props.guitars.model}`}</h4>
-                <h3 className="card-cost">{`$${props.guitars.cost}`}</h3>
+                <h3 className="card-cost">{`$${formatNumber(props.guitars.cost)}`}</h3>
                 <div className="card-description">
                     <p className="description">{`${props.guitars.description}`}</p>
                 </div>

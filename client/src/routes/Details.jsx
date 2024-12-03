@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useCookies } from 'react-cookie';
 import '../ui/Details.css';
+import { formatNumber } from '../lib/utils.js' 
 
 export default function Details() {
   // get product id from params and set up navigation
@@ -79,7 +80,7 @@ export default function Details() {
     <div className="details-container text-center">
       <h1>{guitar.brand} {guitar.model}</h1>
       <img src={`${apiHost}/${guitar.image_filename}`} alt={`${guitar.brand} ${guitar.model}`} className="img-fluid mx-auto d-block" style={{ maxHeight: '400px' }} />
-      <h3 className="text-success">${guitar.cost}</h3>
+      <h3 className="text-success">${formatNumber(guitar.cost)}</h3>
       <p>{guitar.description}</p>
       <div className="additional-details">
         <ul className="list-group list-group-flush mx-auto" style={{ maxWidth: '500px' }}>

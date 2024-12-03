@@ -1,6 +1,7 @@
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { formatNumber } from '../lib/utils.js' 
 
 import '../ui/Cart.css'
 
@@ -11,23 +12,26 @@ const apiHost = import.meta.env.VITE_API_HOST;
   // - should remove product from cookie 
   // - display subtotal, tax, and grand-total
 
-
 // display individual cart items
-const CartItem = ({ product }) => {
-  const total = (product.cost * product.quantity).toFixed(2); // round total to 2 decimal places
+const CartItem = ({ product, removeItem }) => {
+  const total = (product.cost * product.quantity).toFixed(2); 
   return (
     <div className="cart-item">
       <img src={`${apiHost}/${product.image_filename}`} alt={product.name} className="img-thumbnail" />
       <h4>{product.brand} {product.model}</h4>
-      <p>price: ${product.cost.toFixed(2)}</p> {/* round price to 2 decimal places */}
+      <p>price: ${product.cost.toFixed(2)}</p> 
       <p>quantity: {product.quantity}</p>
       <p>total: ${total}</p>
+      <button onClick={() => removeItem(product.product_id)} className="btn btn-secondary mt-3">
+        <i className="bi bi-trash"></i>
+      </button>
     </div>
   );
 };
 
 export default function Cart() {
-  const [cookies] = useCookies(['cart']);
+  //cookie name 
+  const [cookies, setCookie] = useCookies(['cart']);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,6 +50,19 @@ export default function Cart() {
       quantities[id] = (quantities[id] || 0) + 1; // checks if id matches current. if it does, add 1 to the product total.
     });
     return quantities;
+  };
+
+  // remove item from cart (cookie)
+  const removeItem = (product_id) => {
+    const cartCookie = cookies.cart || '';
+    if (typeof cartCookie !== 'string') {
+      console.error('Cart cookie is not a string: ', cartCookie);
+      return;
+    }
+    let productIds = cartCookie.split(',');
+    let updatedProductIds = productIds.filter(id => id !== product_id);
+    setCookie('cart', updatedProductIds.join(','), { path: '/' });
+    setProducts(prevProducts => prevProducts.filter(product => product.product_id !== product_id));
   };
 
   // fetch all guitars from api
@@ -88,16 +105,35 @@ export default function Cart() {
   // calculate subtotal cost
   const calculateSubtotal = () => {
     const subtotal = products.reduce((total, product) => total + (product.cost * product.quantity), 0);
-    return subtotal.toFixed(2); // round subtotal to 2 decimal places
+    return parseFloat(subtotal.toFixed(2)); // ensure subtotal is a number
   };
+
+  // calculate tax
+  const calculateTax = (subtotal) => {
+    const taxRate = 0.15; // Example tax rate of 15%
+    const taxTotal = products.reduce((total, product) => total + (product.cost * taxRate), 0);
+    return parseFloat(taxTotal.toFixed(2)); // ensure taxTotal is a number
+  };
+
+  // calculate grand total
+  const calculateTotal = (subtotal, taxTotal) => {
+    const grandTotal = subtotal + taxTotal;
+    return parseFloat(grandTotal.toFixed(2)); // ensure grandTotal is a number
+  };
+
+  const subtotal = calculateSubtotal();
+  const taxTotal = calculateTax(subtotal);
+  const grandTotal = calculateTotal(subtotal, taxTotal);
 
   return (
     <div className="cart-container text-center">
       <h1>Your Shopping Cart</h1>
       {products.map(product => (
-        <CartItem key={product.product_id} product={product} />
+        <CartItem key={product.product_id} product={product} removeItem={removeItem} />
       ))}
-      <h3>Subtotal: ${calculateSubtotal()}</h3>
+      <h3>Subtotal: ${formatNumber(subtotal)}</h3>
+      <h3>Tax: ${formatNumber(taxTotal)}</h3>
+      <h3>Grand Total: ${formatNumber(grandTotal)}</h3>
       <div>
         <button onClick={() => navigate('/')} className="btn btn-secondary mt-3">Continue Shopping</button>
         <button onClick={() => navigate('/checkout')} className="btn btn-primary mt-3 ml-2">Complete Purchase</button>

@@ -5,6 +5,7 @@ import Card from '../ui/Card';
 import { Link } from 'react-router-dom';
 import '../ui/Home.css';
 
+
 export default function Home() {
     // initialize state for guitars
     const [guitars, setGuitars] = useState([]);
