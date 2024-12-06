@@ -10,11 +10,17 @@ function App() {
   return (
     <>
       <h1 style={{ textAlign: 'center', backgroundColor: 'darkgrey' }}>Dylan's Guitar Shop</h1>
+      
       <div style={{ display: 'flex', padding: '0px', justifyContent: 'center', alignItems: 'center' }}>
+      
         <Nav isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      
       </div>
+      
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      
         <Outlet context={contextValue} />
+      
       </div>
     </>
   );

@@ -103,23 +103,23 @@ export default function Cart() {
   }
 
   // calculate subtotal cost
-  const calculateSubtotal = () => {
-    const subtotal = products.reduce((total, product) => total + (product.cost * product.quantity), 0);
-    return parseFloat(subtotal.toFixed(2)); // ensure subtotal is a number
-  };
+  // const calculateSubtotal = () => {
+  //   const subtotal = products.reduce((total, product) => total + (product.cost * product.quantity), 0);
+  //   return parseFloat(subtotal.toFixed(2)); 
+  // };
 
   // calculate tax
-  const calculateTax = (subtotal) => {
-    const taxRate = 0.15; // Example tax rate of 15%
-    const taxTotal = products.reduce((total, product) => total + (product.cost * taxRate), 0);
-    return parseFloat(taxTotal.toFixed(2)); // ensure taxTotal is a number
-  };
+  // const calculateTax = (subtotal) => {
+  //   const taxRate = 0.15; // Example tax rate of 15%
+  //   const taxTotal = products.reduce((total, product) => total + (product.cost * taxRate), 0);
+  //   return parseFloat(taxTotal.toFixed(2)); 
+  // };
 
   // calculate grand total
-  const calculateTotal = (subtotal, taxTotal) => {
-    const grandTotal = subtotal + taxTotal;
-    return parseFloat(grandTotal.toFixed(2)); // ensure grandTotal is a number
-  };
+  // const calculateTotal = (subtotal, taxTotal) => {
+  //   const grandTotal = subtotal + taxTotal;
+  //   return parseFloat(grandTotal.toFixed(2)); 
+  // };
 
   const subtotal = calculateSubtotal();
   const taxTotal = calculateTax(subtotal);
@@ -131,9 +131,9 @@ export default function Cart() {
       {products.map(product => (
         <CartItem key={product.product_id} product={product} removeItem={removeItem} />
       ))}
-      <h3>Subtotal: ${formatNumber(subtotal)}</h3>
+      {/* <h3>Subtotal: ${formatNumber(subtotal)}</h3>
       <h3>Tax: ${formatNumber(taxTotal)}</h3>
-      <h3>Grand Total: ${formatNumber(grandTotal)}</h3>
+      <h3>Grand Total: ${formatNumber(grandTotal)}</h3> */}
       <div>
         <button onClick={() => navigate('/')} className="btn btn-secondary mt-3">Continue Shopping</button>
         <button onClick={() => navigate('/checkout')} className="btn btn-primary mt-3 ml-2">Complete Purchase</button>

@@ -44,9 +44,6 @@ model Purchase {
   credit_card     BigInt
   credit_expire   DateTime    
   credit_cvv      Int
-  invoice_amt     Decimal
-  invoice_tax     Decimal
-  invoice_total   Decimal
   order_date      DateTime  @default(now()) 
 
   PurchaseItem PurchaseItem[]
