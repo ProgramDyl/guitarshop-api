@@ -15,5 +15,6 @@ export default function Nav({ isLoggedIn }) {
             {isLoggedIn && <Link to="/logout" className="btn btn-primary" style={{ margin: '0 10px' }}>Logout</Link>}
         </nav>
     );
+    
 }
 

@@ -136,7 +136,7 @@ export default function Cart() {
       <h3>Grand Total: ${formatNumber(grandTotal)}</h3> */}
       <div>
         <button onClick={() => navigate('/')} className="btn btn-secondary mt-3">Continue Shopping</button>
-        <button onClick={() => navigate('/checkout')} className="btn btn-primary mt-3 ml-2">Complete Purchase</button>
+        <button onClick={() => navigate('/checkout')} className="btn btn-primary mt-3 ml-2">Proceed to checkout?</button>
       </div>
     </div>
   );
