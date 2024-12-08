@@ -26,17 +26,17 @@ purchaseRouter.post('/', async (req, res) => {
         credit_expire, 
         credit_cvv, 
         cart, 
-        invoice_amt, 
-        invoice_tax, 
-        invoice_total 
+        // invoice_amt, 
+        // invoice_tax, 
+        // invoice_total 
     } = req.body;
 
     // Ensure correct data types
     const creditCardNumber = BigInt(credit_card); // Convert to BigInt
     const creditCvvNumber = parseInt(credit_cvv, 10);
-    const invoiceAmount = parseFloat(invoice_amt);
-    const invoiceTax = parseFloat(invoice_tax);
-    const invoiceTotal = parseFloat(invoice_total);
+    // const invoiceAmount = parseFloat(invoice_amt);
+    // const invoiceTax = parseFloat(invoice_tax);
+    // const invoiceTotal = parseFloat(invoice_total);
 
     // Log the received cart value
     console.log('Cart received:', cart);
@@ -51,14 +51,14 @@ purchaseRouter.post('/', async (req, res) => {
         credit_expire, 
         credit_cvv: creditCvvNumber, 
         cart, 
-        invoice_amt: invoiceAmount, 
-        invoice_tax: invoiceTax, 
-        invoice_total: invoiceTotal 
+        // invoice_amt: invoiceAmount, 
+        // invoice_tax: invoiceTax, 
+        // invoice_total: invoiceTotal 
     });
 
     // Validate inputs
-    if (!street || !city || !province || !country || !postal_code || !credit_card || !credit_expire || !credit_cvv || !cart || !invoice_amt || !invoice_tax || !invoice_total) {
-        console.log('Validation failed:', { street, city, province, country, postal_code, credit_card, credit_expire, credit_cvv, cart, invoice_amt, invoice_tax, invoice_total });
+    if (!street || !city || !province || !country || !postal_code || !credit_card || !credit_expire || !credit_cvv || !cart) {
+        console.log('Validation failed:', { street, city, province, country, postal_code, credit_card, credit_expire, credit_cvv, cart});
         return res.status(400).send('Missing required fields');
     }
 
@@ -93,9 +93,7 @@ purchaseRouter.post('/', async (req, res) => {
                     credit_card: creditCardNumber, 
                     credit_expire: new Date(credit_expire),
                     credit_cvv: creditCvvNumber, 
-                    invoice_amt: invoiceAmount, 
-                    invoice_tax: invoiceTax, 
-                    invoice_total: invoiceTotal 
+                
                 }
             });
 
