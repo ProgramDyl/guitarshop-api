@@ -10,29 +10,34 @@ export default function Home() {
     // initialize state for guitars
     const [guitars, setGuitars] = useState([]);
 
-    // set api host and url for fetching data
     const apiHost = import.meta.env.VITE_API_HOST;
-    const apiUrl = apiHost + '/api/guitars/all';
+    const apiUrl = `${apiHost}/api/guitars/all`;
+    console.log("API Host: ", apiHost);
+    console.log("API URL: ", apiUrl);
 
     // fetch guitars when component mounts or apiUrl changes
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl, { credentials: 'include' });
+                console.log("Fetch Response Status: ", response.status);
                 if (response.ok) {
                     const data = await response.json();
                     console.log("Guitars fetched: ", data);
                     setGuitars(data);
                 } else {
-                    console.error("Failed to fetch: ", response.status);
+                    const text = await response.text();
+                    console.error("Failed to fetch: ", response.status, text);
                     setGuitars(null);
                 }
             } catch (error) {
                 console.error('Error fetching guitars: ', error);
+                setGuitars(null);
             }
         }
         fetchData();
-    }, [apiUrl]);
+    }, []);
+    
 
     // display loading message if guitars are null
     if (guitars === null) {

@@ -15,13 +15,16 @@ const guitarsRouter = express.Router();
 guitarsRouter.get('/all', async (req, res) => {
     try {
         const guitars = await prisma.guitars.findMany();
+        console.log("Fetched Guitars: ", guitars);
         res.json(guitars);
         console.log("Guitars retrieved");
     } catch (error) {
-        console.error("Error fetching all guitars: ", error);
-        res.status(500).json({ message: 'Internal server error' });
+        console.error("Error fetching all guitars: ", error.message);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
+
+
 
 guitarsRouter.get('/:id', async (req, res) => {
 
