@@ -9,8 +9,12 @@ export default function Nav({ isLoggedIn }) {
     //function to calculate the total number of products in cart
     const getCartCount = () => {
         const cartCookie = cookies.cart || '';
-        const productIds = cartCookie.split(',');
-        return productIds.length;
+        if (typeof cartCookie === 'string') {
+            const productIds = cartCookie.split(',');
+            return productIds.length;
+        } else {
+            return 0;
+        }
     };
 
     const cartItemCount = getCartCount();

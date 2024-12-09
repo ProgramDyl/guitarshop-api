@@ -8,6 +8,7 @@ export default function Signup() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [serverError, setServerError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+    
     const apiHost = import.meta.env.VITE_API_HOST;
     const apiUrl = `${apiHost}/api/users/signup`; 
     const navigate = useNavigate();

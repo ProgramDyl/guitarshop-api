@@ -16,24 +16,24 @@ export default function Checkout() {
         cvv: ''
     });
 
-    // Initialize state variables for error messages
+    // init state variables
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    // Initialize state variable for cart items
+    // cart items state
     const [cartItems, setCartItems] = useState([]);
 
-    // Correctly extract `isLoggedIn` from context
+    // lift state of isLoggedIn to parent component
     const { isLoggedIn, setIsLoggedIn } = useOutletContext();
 
-    // Extract cart data from cookies
+    // extract cart data
     const [cookies, setCookie, removeCookie] = useCookies(['cart', 'authToken']);
-    const navigate = useNavigate(); // Add useNavigate hook
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         const token = cookies.authToken;
         if (token) {
-            // Validate token if necessary
+            // validate token
             setIsLoggedIn(true);
         }
 
@@ -70,7 +70,7 @@ export default function Checkout() {
         fetchCartItems();
     }, [cookies, setIsLoggedIn]);
 
-    // Handle input changes
+    // input chgs
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -78,7 +78,7 @@ export default function Checkout() {
         });
     };
 
-    // Validate form inputs
+    // validate
     const validate = () => {
         const newErrors = {};
         if (!form.name) newErrors.name = 'Name is required';
@@ -92,35 +92,37 @@ export default function Checkout() {
         return newErrors;
     };
 
-    // Handle form submission
+    // //form submission::
     const handleSubmit = (e) => {
+        //tip: default submission form behaviour is bad lol
         e.preventDefault();
         console.log('Submit button clicked');
+
+        //validate
         const validationErrors = validate();
         setErrors(validationErrors);
+
+        //no errors? proceed with form
         if (Object.keys(validationErrors).length === 0) {
             console.log('Validation passed');
             console.log('Form submitted:', form);
             console.log('Cart items:', cartItems);
-            // Proceed with further logic like API call
+            
+            //success messages: 
             setSuccessMessage('Purchase successful!');
+            //clears server errors
             setServerError('');
-            removeCookie('cart'); // Clear cart cookie
+
+            removeCookie('cart'); //remove cookie
             console.log('Navigating to confirmation page');
-            navigate('/confirmation'); // Redirect to confirmation page
+            navigate('/confirmation'); // nav to confirmation page
         } else {
             console.log('Validation failed:', validationErrors);
             setServerError('Cannot complete purchase. Please correct the errors and try again.');
         }
     };
 
-    // Log current state values for debugging (optional)
-    console.log("Form state:", form);
-    console.log("Errors state:", errors);
-    console.log("Cart items:", cartItems);
-    console.log("Is logged in:", isLoggedIn);
-
-    // Conditional rendering based on login status
+    // //if user is NOT logged in, make em log in!
     if (!isLoggedIn) {
         return (
             <div>
@@ -130,6 +132,7 @@ export default function Checkout() {
         );
     }
 
+    //form ui!
     return (
         <div>
             <h1>Checkout</h1>

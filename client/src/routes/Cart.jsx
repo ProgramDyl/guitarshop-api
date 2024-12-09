@@ -54,16 +54,44 @@ export default function Cart() {
 
   // remove item from cart (cookie)
   const removeItem = (product_id) => {
+    //get cookie or default to empty string
     const cartCookie = cookies.cart || '';
+    //validate
     if (typeof cartCookie !== 'string') {
-      console.error('Cart cookie is not a string: ', cartCookie);
-      return;
+        console.error('Cart cookie is not a string: ', cartCookie);
+        return;
     }
+    //split into array of ids
     let productIds = cartCookie.split(',');
-    let updatedProductIds = productIds.filter(id => id !== product_id);
-    setCookie('cart', updatedProductIds.join(','), { path: '/' });
-    setProducts(prevProducts => prevProducts.filter(product => product.product_id !== product_id));
-  };
+
+    // find product id in the array
+    const index = productIds.indexOf(product_id.toString());
+    //if in the array, remove
+    if (index !== -1) {
+        productIds.splice(index, 1);
+    }
+
+    // update into new array -- product ids joined by commas
+    setCookie('cart', productIds.join(','), { path: '/' });
+
+    // make state reflect cart changes
+    setProducts(prevProducts => {
+      //go through previous products array
+        return prevProducts.map(product => {
+            if (product.product_id === product_id) {
+                if (product.quantity > 1) {
+                    return { ...product, quantity: product.quantity - 1 };
+                } else {
+                    return null;
+                }
+            }
+            return product;
+        }).filter(product => product !== null);
+    });
+};
+
+
+
 
   // fetch all guitars from api
   const fetchAllGuitars = async () => {

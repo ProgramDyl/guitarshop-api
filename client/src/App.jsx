@@ -3,8 +3,10 @@ import { useState } from 'react';
 import Nav from './ui/Nav';
 
 function App() {
+  //state variables! 
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
+  // context sets  conditions for component states. 
   const contextValue = { isLoggedIn, setIsLoggedIn }; 
 
   return (
