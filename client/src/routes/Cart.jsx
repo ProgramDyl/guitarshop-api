@@ -102,29 +102,7 @@ export default function Cart() {
     return <p>Loading...</p>;
   }
 
-  // calculate subtotal cost
-  // const calculateSubtotal = () => {
-  //   const subtotal = products.reduce((total, product) => total + (product.cost * product.quantity), 0);
-  //   return parseFloat(subtotal.toFixed(2)); 
-  // };
-
-  // calculate tax
-  // const calculateTax = (subtotal) => {
-  //   const taxRate = 0.15; // Example tax rate of 15%
-  //   const taxTotal = products.reduce((total, product) => total + (product.cost * taxRate), 0);
-  //   return parseFloat(taxTotal.toFixed(2)); 
-  // };
-
-  // calculate grand total
-  // const calculateTotal = (subtotal, taxTotal) => {
-  //   const grandTotal = subtotal + taxTotal;
-  //   return parseFloat(grandTotal.toFixed(2)); 
-  // };
-
-  const subtotal = calculateSubtotal();
-  const taxTotal = calculateTax(subtotal);
-  const grandTotal = calculateTotal(subtotal, taxTotal);
-
+ 
   return (
     <div className="cart-container text-center">
       <h1>Your Shopping Cart</h1>

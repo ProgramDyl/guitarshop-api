@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useCookies } from 'react-cookie';
 
 export default function Login() {
     const { setIsLoggedIn } = useOutletContext(); // get the setIsLoggedIn function from context
@@ -10,6 +11,7 @@ export default function Login() {
     const apiHost = import.meta.env.VITE_API_HOST; 
     const apiUrl = `${apiHost}/api/users/login`; 
     const navigate = useNavigate(); 
+    const [cookies, setCookie] = useCookies(['authToken']); //init user token
 
     // handle form submission 
     const onSubmit = async (data) => {
@@ -36,6 +38,13 @@ export default function Login() {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to log in.');
             }
+
+
+            const responseData = await response.json();
+            const token = responseData.token;
+
+            //save token in cookies to store login across refreshes :)
+            setCookie('authToken', token, { path: '/', maxAge: 3000 });
 
             setSuccessMessage('Log-in Successful!'); // set success message
             setServerError(null); // clear any server errors
