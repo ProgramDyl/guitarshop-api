@@ -3,7 +3,6 @@ import { useCookies } from 'react-cookie';
 import { useOutletContext, Link, useNavigate } from 'react-router-dom';
 import '../ui/Checkout.css';
 
-
 export default function Checkout() {
     // Initialize state variables for form inputs
     const [form, setForm] = useState({
@@ -28,7 +27,7 @@ export default function Checkout() {
     const { isLoggedIn, setIsLoggedIn } = useOutletContext();
 
     // Extract cart data from cookies
-    const [cookies] = useCookies(['cart', 'authToken']);
+    const [cookies, setCookie, removeCookie] = useCookies(['cart', 'authToken']);
     const navigate = useNavigate(); // Add useNavigate hook
 
     useEffect(() => {
@@ -96,16 +95,21 @@ export default function Checkout() {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log('Submit button clicked');
         const validationErrors = validate();
         setErrors(validationErrors);
         if (Object.keys(validationErrors).length === 0) {
+            console.log('Validation passed');
             console.log('Form submitted:', form);
             console.log('Cart items:', cartItems);
             // Proceed with further logic like API call
             setSuccessMessage('Purchase successful!');
             setServerError('');
+            removeCookie('cart'); // Clear cart cookie
+            console.log('Navigating to confirmation page');
             navigate('/confirmation'); // Redirect to confirmation page
         } else {
+            console.log('Validation failed:', validationErrors);
             setServerError('Cannot complete purchase. Please correct the errors and try again.');
         }
     };
@@ -156,7 +160,7 @@ export default function Checkout() {
                 <div className="form-group">
                     <label>Province</label>
                     <input type="text" name="province" value={form.province} onChange={handleChange} required />
-                    {errors.province && <p class="error">{errors.province}</p>}
+                    {errors.province && <p className="error">{errors.province}</p>}
                 </div>
                 <div className="form-group">
                     <label>Postal Code</label>

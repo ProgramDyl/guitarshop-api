@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <h1 style={{ textAlign: 'center', backgroundColor: 'darkgrey' }}>Dylan's Guitar Shop</h1>
+      <h1 style={{ textAlign: 'center', backgroundColor: 'cornsilk' }}>JamWare Guitar Collection</h1>
       
       <div style={{ display: 'flex', padding: '0px', justifyContent: 'center', alignItems: 'center' }}>
       
